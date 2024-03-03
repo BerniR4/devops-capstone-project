@@ -143,3 +143,28 @@ class TestAccountService(TestCase):
         """It should return 404 when Reading an Account that does not exist"""
         response = self.client.get(f"{BASE_URL}/0") 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_an_account(self):
+        """It should Update an existing Account"""
+        test_account = AccountFactory()
+        response = self.client.post(BASE_URL, json=test_account.serialize())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Update account
+        new_account = response.get_json()
+        new_account["name"] = "Updated name"
+        response = self.client.put(
+            f"{BASE_URL}/{new_account['id']}",
+            json=new_account,
+            content_type="application/json"
+        ) 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check the data is correct
+        updated_account = response.get_json()
+        self.assertEqual(updated_account["name"], "Updated name")
+
+    def test_update_account_not_found(self):
+        """It should return 404 when Updating an Account that does not exist"""
+        response = self.client.put(f"{BASE_URL}/0") 
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
