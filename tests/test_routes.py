@@ -131,7 +131,7 @@ class TestAccountService(TestCase):
     def test_read_an_account(self):
         """It should Read an existing Account"""
         account = self._create_accounts(1)[0]
-        response = self.client.get(f"{BASE_URL}/{account.id}") 
+        response = self.client.get(f"{BASE_URL}/{account.id}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Check the data is correct
@@ -144,7 +144,7 @@ class TestAccountService(TestCase):
 
     def test_account_not_found(self):
         """It should return 404 when Reading an Account that does not exist"""
-        response = self.client.get(f"{BASE_URL}/0") 
+        response = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_an_account(self):
@@ -160,7 +160,7 @@ class TestAccountService(TestCase):
             f"{BASE_URL}/{new_account['id']}",
             json=new_account,
             content_type="application/json"
-        ) 
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Check the data is correct
@@ -169,27 +169,27 @@ class TestAccountService(TestCase):
 
     def test_update_account_not_found(self):
         """It should return 404 when Updating an Account that does not exist"""
-        response = self.client.put(f"{BASE_URL}/0") 
+        response = self.client.put(f"{BASE_URL}/0")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_an_account(self):
         """It should Delete an existing Account"""
         account = self._create_accounts(1)[0]
-        response = self.client.delete(f"{BASE_URL}/{account.id}") 
+        response = self.client.delete(f"{BASE_URL}/{account.id}")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         # Confirm that the account doesn't exist
-        response = self.client.get(f"{BASE_URL}/{account.id}") 
+        response = self.client.get(f"{BASE_URL}/{account.id}")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_get_account_list(self):
         """It should Get a list of Accounts"""
         self._create_accounts(5)
-        response = self.client.get(BASE_URL) 
+        response = self.client.get(BASE_URL)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
         self.assertEqual(len(data), 5)
-    
+
     def test_method_not_allowed(self):
         """It should not allow an illegal method call"""
         resp = self.client.put(BASE_URL)
