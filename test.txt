@@ -1,0 +1,6 @@
+This is a small test file added to the repository.
+
+- Created: 2025-11-03
+- Purpose: simple test / placeholder file
+
+Feel free to edit or remove this file.
